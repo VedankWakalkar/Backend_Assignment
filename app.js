@@ -1,16 +1,21 @@
 import express from "express";
 import { PORT } from "./config/env.js";
+import cookieParser from "cookie-parser";
+import cors from 'cors'
+
+import connectToDatabase from "./database/mongoose.js";
 
 const app= express();
 
-app.get('/',(req,res)=>{
-    res.json({
-        message:"HElLO WORLD"
-    })
-})
+app.use(express.json());
+app.use(express.urlencoded({extended:false}))
+app.use(cookieParser())
+app.use(cors())
 
-app.listen(PORT,()=>{
+
+app.listen(PORT,async()=>{
     console.log(`Server Started on http://localhost:${PORT}`)
+    await connectToDatabase();
 })
 
 export default app;
